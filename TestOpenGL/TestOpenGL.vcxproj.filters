@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Square.cpp">
+    <ClCompile Include="SnowFractal.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

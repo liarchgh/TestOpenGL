@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Square.cpp" />
+    <ClCompile Include="SnowFractal.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9769B90F-E768-4565-913A-0D345E26DE69}</ProjectGuid>
