@@ -73,7 +73,7 @@ void MyInit() {
 	glColor3f(0.0, 0.0, 0.0);
 }
 
-int main(int argc, char** argv) {
+int main1(int argc, char** argv) {
 	glutInit(&argc, argv);
 	n = 10;
 	scanf_s("%d", &n);

@@ -19,12 +19,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DoubleBuffer.cpp" />
+    <ClCompile Include="Fractal.cpp" />
+    <ClCompile Include="FractalTetrahedra.cpp" />
     <ClCompile Include="SnowFractal.cpp" />
+    <ClCompile Include="Square.cpp" />
+    <ClCompile Include="Test1.cpp" />
+    <ClCompile Include="Test3.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9769B90F-E768-4565-913A-0D345E26DE69}</ProjectGuid>
     <RootNamespace>TestOpenGL</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

@@ -1,5 +1,2 @@
-﻿  SnowFractal.cpp
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\snowfractal.cpp(8): warning C4838: 从“double”转换到“GLfloat”需要收缩转换
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\snowfractal.cpp(8): warning C4305: “初始化”: 从“double”到“GLfloat”截断
-  TestOpenGL.vcxproj -> D:\Documents\Learning\AboutCode\OpenGL\TestOpenGL\Debug\TestOpenGL.exe
-  TestOpenGL.vcxproj -> D:\Documents\Learning\AboutCode\OpenGL\TestOpenGL\Debug\TestOpenGL.pdb (Partial PDB)
+﻿  正在跳过...(未检测到相关更改)
+  DoubleBuffer.cpp
