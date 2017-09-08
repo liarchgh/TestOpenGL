@@ -8,7 +8,8 @@ using namespace std;
 const int DESIRED_FPS = 120, mxv = 10;
 int mxNumCircles = 1000, mxRadius = 40, mnRadius = 3,
 winWid = 800, winHei = 600,
-choose;
+choose, eyeDistance = 400.0f, planeDepth = 200.0f;
+
 struct circle {
 	int x, y, radius;
 	unsigned char color;
@@ -48,8 +49,18 @@ struct cube {
     void draw();
 };
 
+struct car {
+    void draw();
+};
+
+struct sphere {
+    vector<car>cars;
+    void draw();
+};
+
 vector<circle>circles;
 vector<cube>cubes;
+vector<sphere>spheres;
 
 void myInit();
 void myKey(unsigned char key, int x, int y);
@@ -68,6 +79,8 @@ void drawCubes();
 void initDrawSquareCircle();
 void initDrawCubes();
 void setOpenGL();
+
+void initDrawCars();
 
 int main(int argc, char** argv) {
 	glutInit(&argc, argv);
@@ -92,6 +105,9 @@ void myReshape(int w, int h) {
         float depth1 = 200.0f, depth2 = 600.0f;
         glFrustum(-winWid / 2, winWid / 2, -winHei / 2, winHei / 2, depth1, depth2);
         //glOrtho(-w / 2, w / 2, -h / 2, h / 2, depth1, depth2);
+    }
+    if (choose == 2) {
+        
     }
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -142,6 +158,9 @@ void myDisplay() {
     }
     if (choose == 1) {
         drawCubes();
+    }
+    if (choose == 2) {
+        drawCars();
     }
 	glutSwapBuffers();
 }
@@ -260,6 +279,7 @@ void setOpenGL() {
     printf("Choose:\n");
     printf("0: draw squares and circles\n");
     printf("1: draw a cube\n");
+    printf("2: draw circles and cars\n");
     scanf_s("%d", &choose);
     switch (choose) {
         case 0:
@@ -302,9 +322,12 @@ void setOpenGL() {
             cubes.push_back(aCube);
             initDrawCubes();
             break;
-        //default:
-        //    printf("Nothin.");
-        //    break;
+        case 2:
+            initDrawCars();
+            break;
+        default:
+            printf("Nothin.");
+            break;
     }
 }
 
@@ -423,4 +446,21 @@ void cube::draw() {
         squares[i].draw();
     }
     glPopMatrix();
+}
+
+void initDrawCars() {
+	glutInitDisplayMode(GL_DOUBLE | GL_RGB | GL_DEPTH);
+	glutDisplayFunc(myDisplay);
+	glutMouseFunc(myMouse);
+	glutKeyboardFunc(myKey);
+	glutReshapeFunc(myReshape);
+	glutTimerFunc((1000.0) / DESIRED_FPS, updateTime, 1);
+    glEnable(GL_DEPTH_TEST);
+	glutMainLoop();
+}
+
+void drawCars() {
+    for (int i = 0; i < spheres.size(); ++i) {
+        spheres[i].draw();
+    }
 }

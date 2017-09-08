@@ -1,15 +1,41 @@
 ﻿  DoubleBuffer.cpp
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(102): warning C4018: “<”: 有符号/无符号不匹配
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(108): warning C4018: “<”: 有符号/无符号不匹配
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(117): warning C4244: “参数”: 从“double”转换到“unsigned int”，可能丢失数据
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(121): warning C4018: “<”: 有符号/无符号不匹配
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(127): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(128): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(150): warning C4018: “<”: 有符号/无符号不匹配
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(165): warning C4018: “<”: 有符号/无符号不匹配
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(172): warning C4018: “<”: 有符号/无符号不匹配
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(317): warning C4244: “参数”: 从“double”转换到“unsigned int”，可能丢失数据
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(322): warning C4018: “<”: 有符号/无符号不匹配
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(409): warning C4244: “参数”: 从“double”转换到“unsigned int”，可能丢失数据
-  TestOpenGL.vcxproj -> D:\Documents\Learning\AboutCode\OpenGL\TestOpenGL\Debug\TestOpenGL.exe
-  TestOpenGL.vcxproj -> D:\Documents\Learning\AboutCode\OpenGL\TestOpenGL\Debug\TestOpenGL.pdb (Partial PDB)
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(11): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(118): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(124): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(133): warning C4244: “参数”: 从“double”转换到“unsigned int”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(137): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(143): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(144): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(163): error C3861: “drawCars”: 找不到标识符
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(169): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(184): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(191): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(325): error C2360: “aCube”的初始化操作由“case”标签跳过
+  d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(309): note: 参见“aCube”的声明
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(325): error C2360: “vocs”的初始化操作由“case”标签跳过
+  d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(290): note: 参见“vocs”的声明
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(325): error C2360: “oz”的初始化操作由“case”标签跳过
+  d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(289): note: 参见“oz”的声明
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(325): error C2360: “oy”的初始化操作由“case”标签跳过
+  d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(289): note: 参见“oy”的声明
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(325): error C2360: “ox”的初始化操作由“case”标签跳过
+  d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(289): note: 参见“ox”的声明
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(325): error C2360: “a”的初始化操作由“case”标签跳过
+  d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(289): note: 参见“a”的声明
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(328): error C2361: “default”标签跳过“aCube”的初始化操作
+  d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(309): note: 参见“aCube”的声明
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(328): error C2361: “default”标签跳过“vocs”的初始化操作
+  d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(290): note: 参见“vocs”的声明
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(328): error C2361: “default”标签跳过“oz”的初始化操作
+  d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(289): note: 参见“oz”的声明
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(328): error C2361: “default”标签跳过“oy”的初始化操作
+  d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(289): note: 参见“oy”的声明
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(328): error C2361: “default”标签跳过“ox”的初始化操作
+  d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(289): note: 参见“ox”的声明
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(328): error C2361: “default”标签跳过“a”的初始化操作
+  d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(289): note: 参见“a”的声明
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(340): warning C4244: “参数”: 从“double”转换到“unsigned int”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(345): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(432): warning C4244: “参数”: 从“double”转换到“unsigned int”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(457): warning C4244: “参数”: 从“double”转换到“unsigned int”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(463): warning C4018: “<”: 有符号/无符号不匹配
