@@ -5,6 +5,29 @@
 #include <vector>
 using namespace std;
 
+const GLfloat planetColor[] = {0.9, 0.6, 0.4};
+
+// Car tyre color. 
+const GLfloat tyreColor[] = {0.2, 0.2, 0.2};
+
+// Material properties for all objects.
+const GLfloat materialSpecular[] = {1.0, 1.0, 1.0, 1.0};
+const GLfloat materialShininess[] = {100.0};
+const GLfloat materialEmission[] = {0.0, 0.0, 0.0, 1.0};
+
+// Light 0.
+const GLfloat light0Ambient[] = {0.1, 0.1, 0.1, 1.0};
+const GLfloat light0Diffuse[] = {0.7, 0.7, 0.7, 1.0};
+const GLfloat light0Specular[] = {0.9, 0.9, 0.9, 1.0};
+const GLfloat light0Position[] = {1.0, 1.0, 1.0, 0.0};
+
+// Light 1.
+const GLfloat light1Ambient[] = {0.1, 0.1, 0.1, 1.0};
+const GLfloat light1Diffuse[] = {0.7, 0.7, 0.7, 1.0};
+const GLfloat light1Specular[] = {0.9, 0.9, 0.9, 1.0};
+const GLfloat light1Position[] = {-1.0, 0.0, -0.5, 0.0};
+
+
 const int DESIRED_FPS = 120, mxv = 10;
 int mxNumCircles = 1000, mxRadius = 40, mnRadius = 3,
 winWid = 800, winHei = 600,
@@ -13,7 +36,11 @@ float eyeDistance = 400.0f, planeDepth = 200.0f,
 light0pos[4] = {0.0f, 600.0f, 0.0f , 0.0f},
 light1pos[4] = {300.0f, 200.0f, 400.0f, 0.0f};
 
-struct circle{
+struct object{
+    void draw();
+};
+
+struct circle:object{
     int x, y, radius;
     unsigned char color;
     struct{
@@ -22,7 +49,7 @@ struct circle{
     circle(int a, int b, int c, int d, int e, unsigned char f);
     void move(int val);
 };
-struct voc{
+struct voc:object{
     float color[4] = {1.0, 1.0, 1.0, 1.0};
     float pos[3] = {0,0,0};
 
@@ -31,12 +58,12 @@ struct voc{
     voc(float* vpos, float* vcol);
     voc();
 };
-struct square{
+struct square:object{
     voc* ver[4];
     void draw();
 };
 
-struct cube{
+struct cube:object{
     //点的顺序固定 从上往下看，先是第一层的四个点逆时针方向存储，然后是下一层四个点也是逆时针存储
     voc vertex[8];
     square squares[6];
@@ -52,11 +79,14 @@ struct cube{
     void draw();
 };
 
-struct car{
+struct car:object{
+    float angle[2], vAngle[2], color[4], * height;
+    vector<object>component;
+
     void draw();
 };
 
-struct sphere{
+struct sphere:object{
     static int ifShowAxiss;
     float pos[3], angle[2], vAngle[2], radius,
         color[4], axissColor[3][4];
@@ -238,6 +268,31 @@ void mySpecial(int key, int x, int y){
                 spheres[i].angle[0] += spheres[i].vAngle[0];
             }
         }
+        if(key == GLUT_KEY_DOWN){
+            for(int i = 0; i < spheres.size(); ++i){
+                spheres[i].angle[0] -= spheres[i].vAngle[0];
+            }
+        }
+        if(key == GLUT_KEY_LEFT){
+            for(int i = 0; i < spheres.size(); ++i){
+                spheres[i].angle[1] += spheres[i].vAngle[0];
+            }
+        }
+        if(key == GLUT_KEY_RIGHT){
+            for(int i = 0; i < spheres.size(); ++i){
+                spheres[i].angle[1] -= spheres[i].vAngle[0];
+            }
+        }
+        for(int i = 0; i < spheres.size(); ++i){
+            float& a = spheres[i].angle[0],
+                b = spheres[i].angle[1];
+            if(a > 90.0f){
+                a = 90.0f;
+            }
+            else if(a < -90.0f){
+                a = -90.0f;
+            }
+        }
     }
 }
 
@@ -353,8 +408,7 @@ void setOpenGL(){
             initDrawCubes();
             break;
         }
-        case 2:
-        {
+        case 2:{
             sphere s;
             spheres.push_back(s);
             initDrawCars();
@@ -487,6 +541,45 @@ void cube::draw(){
 
 void initDrawCars(){
     glutInitDisplayMode(GL_DOUBLE | GL_RGB | GL_DEPTH);
+    glClearColor(0.0, 0.0, 0.0, 1.0); // Set black background color.
+    glEnable(GL_DEPTH_TEST); // Use depth-buffer for hidden surface removal.
+    glShadeModel(GL_SMOOTH);
+
+    //=======================================================================
+    // The rest of the code below sets up the lighting and 
+    // the material properties of all objects.
+    // You can just ignore this part.
+    //=======================================================================
+
+    // Set Light 0.
+    glLightfv(GL_LIGHT0, GL_AMBIENT, light0Ambient);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light0Diffuse);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, light0Specular);
+    glEnable(GL_LIGHT0);
+
+    // Set Light 1.
+    glLightfv(GL_LIGHT1, GL_AMBIENT, light1Ambient);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, light1Diffuse);
+    glLightfv(GL_LIGHT1, GL_SPECULAR, light1Specular);
+    glEnable(GL_LIGHT1);
+
+    glEnable(GL_LIGHTING);
+
+    // Set some global light properties.
+    GLfloat globalAmbient[] = {0.1, 0.1, 0.1, 1.0};
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbient);
+    glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_FALSE);
+    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
+
+    // Set the universal material properties.
+    // The diffuse and ambient components can be changed using glColor*().
+    glMaterialfv(GL_FRONT, GL_SPECULAR, materialSpecular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, materialShininess);
+    glMaterialfv(GL_FRONT, GL_EMISSION, materialEmission);
+    glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+    glEnable(GL_COLOR_MATERIAL);
+
+    glEnable(GL_NORMALIZE); // Let OpenGL automatically renomarlize all normal vectors.
     glutDisplayFunc(myDisplay);
     glutMouseFunc(myMouse);
     glutKeyboardFunc(myKey);
@@ -506,6 +599,8 @@ void drawCars(){
     gluLookAt(0.0f, 0.0f, eyeDistance, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
     glLightfv(GL_LIGHT0, GL_POSITION, light0pos);
     glLightfv(GL_LIGHT1, GL_POSITION, light1pos);
+    //glutSolidSphere(100.0, 72, 36);
+
     for(int i = 0; i < spheres.size(); ++i){
         spheres[i].draw();
     }
@@ -517,7 +612,7 @@ void sphere::setRadius(float x){
 
 sphere::sphere(){
     float a[3] = {0.0, 0.0, 0.0},
-        va[2] = {10.0, 10.0},
+        va[2] = {3.0, 3.0},
         c[4] = {0.0, 0.5, 0.5, 1.0},
         cc[12] = {1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0};
     setAngle(a);
@@ -525,7 +620,7 @@ sphere::sphere(){
     setColor(c);
     setRadius(100.0f);
     setAxissColor(cc);
-    setVAngle(a);
+    setVAngle(va);
 }
 
 void sphere::setColor(float *c){
@@ -538,9 +633,13 @@ void sphere::draw(){
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glTranslatef(pos[0], pos[1], pos[2]);
-    glRotatef(angle[1], 1.0, 0.0, 0.0);
-    glRotatef(angle[0], 0.0, 1.0, 0.0);
+    //printf("rot %f\n", angle[0]);
+    glRotatef(angle[0], 1.0, 0.0, 0.0);
+    glRotatef(angle[1], 0.0, 1.0, 0.0);
     glColor3fv(color);
+    //MyInit();
+    //InitCars();
+
     glutSolidSphere(radius, 100, 100);
     if(ifShowAxiss){
         drawAxiss(10000.0f);
@@ -593,4 +692,13 @@ void sphere::setVAngle(float* x){
     for(int i = 0; i < 2; ++i){
         vAngle[i] = x[i];
     }
+}
+
+void car::draw(){
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glRotatef(angle[0], 0.0, 1.0, 0.0);
+    glRotatef(angle[1], 1.0, 0.0, 0.0);
+    glTranslatef(0.0, 0.0, *height);
+    glPopMatrix();
 }
