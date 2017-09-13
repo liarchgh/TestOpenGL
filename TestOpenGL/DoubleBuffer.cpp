@@ -72,16 +72,17 @@ struct cube:object{
 
     //voc a, voc b, voc c, voc d, voc e, voc f, voc g, voc h
     cube(voc* vocs);
-    cube(){ setSquares(); }
+    cube();
     void setSquares();
     void setOrigin(float a, float b, float c);
     void setLength(float a);
     void draw();
+    void setVocs(voc* vocs);
 };
 
 struct car:object{
     float angle[2], vAngle[2], color[4], * height;
-    vector<object>component;
+    vector<cube>component;
 
     void draw();
 };
@@ -409,7 +410,12 @@ void setOpenGL(){
             break;
         }
         case 2:{
+
+            cube ss;
+            car aCar;
+            aCar.component.push_back(ss);
             sphere s;
+            s.cars.push_back(aCar);
             spheres.push_back(s);
             initDrawCars();
             break;
@@ -467,6 +473,10 @@ void cube::setSquares(){
 
 cube::cube(voc* vocs){
     setSquares();
+    setVocs(vocs);
+}
+
+void cube::setVocs(voc* vocs){
     for(int i = 0; i < 8; ++i){
         vertex[i] = vocs[i];
     }
@@ -644,6 +654,10 @@ void sphere::draw(){
     if(ifShowAxiss){
         drawAxiss(10000.0f);
     }
+    for(int i = 0; i < cars.size(); ++i){
+        cars[i].height = &radius;
+        cars[i].draw();
+    }
     glPopMatrix();
 }
 
@@ -695,10 +709,52 @@ void sphere::setVAngle(float* x){
 }
 
 void car::draw(){
+    //printf("draw a car\n");
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glRotatef(angle[0], 0.0, 1.0, 0.0);
     glRotatef(angle[1], 1.0, 0.0, 0.0);
     glTranslatef(0.0, 0.0, *height);
+    for(int i = 0; i < component.size(); ++i){
+        component[i].draw();
+    }
     glPopMatrix();
+}
+
+cube::cube(){
+    setSquares();
+    float a = 100.0f, ox = 0.0, oy = 0.0, oz = 0.0;
+    voc vocs[8];
+    vocs[0].setPos(a, a, a);
+    vocs[1].setPos(a, a, -a);
+    vocs[2].setPos(-a, a, -a);
+    vocs[3].setPos(-a, a, a);
+    vocs[4].setPos(a, -a, a);
+    vocs[5].setPos(a, -a, -a);
+    vocs[6].setPos(-a, -a, -a);
+    vocs[7].setPos(-a, -a, a);
+
+    vocs[0].setColor(1.0, 0.0, 0.0, 1.0);
+    vocs[1].setColor(0.0, 1.0, 0.0, 1.0);
+    vocs[2].setColor(0.0, 0.0, 1.0, 1.0);
+    vocs[3].setColor(1.0, 1.0, 0.0, 1.0);
+    vocs[4].setColor(1.0, 0.0, 1.0, 1.0);
+    vocs[5].setColor(0.0, 1.0, 1.0, 1.0);
+    vocs[6].setColor(0.0, 0.0, 0.0, 1.0);
+    vocs[7].setColor(1.0, 1.0, 1.0, 1.0);
+
+
+    setVocs(vocs);
+    setLength(a);
+    setOrigin(ox, oy, oz);
+    //for (int i = 0; i < 8; ++i) {
+    //    float* pp = (aCube.vertex)[i].color;
+    //    printf("%f %f %f %f %f\n", pp[0], pp[1], pp[2], pp[3]);
+    //}
+    //for (int i = 0; i < 6; ++i) {
+    //    for (int j = 0; j < 4; ++j) {
+    //        float* pp = aCube.squares[i].ver[j]->color;
+    //        printf("%f %f %f %f %f\n", pp[0], pp[1], pp[2], pp[3]);
+    //    }
+    //}
 }
