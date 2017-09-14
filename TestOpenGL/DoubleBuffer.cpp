@@ -37,7 +37,7 @@ light0pos[4] = {0.0f, 600.0f, 0.0f , 0.0f},
 light1pos[4] = {300.0f, 200.0f, 400.0f, 0.0f};
 
 struct object{
-    void draw();
+    void draw(){}
 };
 
 struct circle:object{
@@ -82,7 +82,7 @@ struct cube:object{
 
 struct car:object{
     float angle[2], vAngle[2], color[4], * height;
-    vector<cube>component;
+    vector<object>component;
 
     void draw();
 };
@@ -410,8 +410,7 @@ void setOpenGL(){
             break;
         }
         case 2:{
-
-            cube ss;
+            sphere ss;
             car aCar;
             aCar.component.push_back(ss);
             sphere s;
@@ -640,21 +639,22 @@ void sphere::setColor(float *c){
 }
 
 void sphere::draw(){
-    glMatrixMode(GL_MODELVIEW);
+    //glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glTranslatef(pos[0], pos[1], pos[2]);
     //printf("rot %f\n", angle[0]);
-    glRotatef(angle[0], 1.0, 0.0, 0.0);
-    glRotatef(angle[1], 0.0, 1.0, 0.0);
     glColor3fv(color);
     //MyInit();
     //InitCars();
 
+    glRotatef(angle[0], 1.0, 0.0, 0.0);
+    glRotatef(angle[1], 0.0, 1.0, 0.0);
     glutSolidSphere(radius, 100, 100);
     if(ifShowAxiss){
         drawAxiss(10000.0f);
     }
     for(int i = 0; i < cars.size(); ++i){
+        //printf("i is %d\n", i);
         cars[i].height = &radius;
         cars[i].draw();
     }
@@ -710,12 +710,14 @@ void sphere::setVAngle(float* x){
 
 void car::draw(){
     //printf("draw a car\n");
-    glMatrixMode(GL_MODELVIEW);
+    //glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glRotatef(angle[0], 0.0, 1.0, 0.0);
     glRotatef(angle[1], 1.0, 0.0, 0.0);
     glTranslatef(0.0, 0.0, *height);
+    //printf("++++%f\n", *height);
     for(int i = 0; i < component.size(); ++i){
+        //printf("i of car is %d\n", i);
         component[i].draw();
     }
     glPopMatrix();
