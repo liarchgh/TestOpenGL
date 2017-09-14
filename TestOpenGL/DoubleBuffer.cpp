@@ -37,7 +37,9 @@ light0pos[4] = {0.0f, 600.0f, 0.0f , 0.0f},
 light1pos[4] = {300.0f, 200.0f, 400.0f, 0.0f};
 
 struct object{
-    void draw(){}
+    virtual void draw(){
+        printf("draw\n");
+    }
 };
 
 struct circle:object{
@@ -82,13 +84,16 @@ struct cube:object{
 
 struct car:object{
     float angle[2], vAngle[2], color[4], * height;
-    vector<object>component;
+    vector<object*>component;
 
+    void setVAngle(float* x);
+    void setAngle(float* x);
+    car();
     void draw();
 };
 
-struct sphere:object{
-    static int ifShowAxiss;
+struct sphere:public object{
+    int showAxiss;
     float pos[3], angle[2], vAngle[2], radius,
         color[4], axissColor[3][4];
     vector<car>cars;
@@ -101,9 +106,9 @@ struct sphere:object{
     void setPos(float* p);
     void setAxissColor(float* c);
     void setVAngle(float* x);
+    void setShowAxiss(bool x);
     sphere();
 };
-int sphere::ifShowAxiss = 1;
 
 vector<circle>circles;
 vector<cube>cubes;
@@ -174,6 +179,18 @@ void updateTime(int val){
             }
         }
         //printf("%f\n", cubes[0].vAngle[1]);
+    }
+    if(choose == 2){
+        for(int i = 0; i < spheres.size(); ++i){
+            for(int j = 0; j < spheres[i].cars.size(); ++j){
+                car& nc = spheres[i].cars[j];
+                for(int k = 0; k < 2; ++k){
+                    nc.angle[k] += nc.vAngle[k] * val;
+                    printf("%f\n", nc.vAngle[k]);
+                    //nc.angle[k] -= int(nc.angle[k] / 360) * 360;
+                }
+            }
+        }
     }
     //printf("time func val is %d\n", val);
     glutPostRedisplay();
@@ -410,10 +427,12 @@ void setOpenGL(){
             break;
         }
         case 2:{
-            sphere ss;
+            sphere* ss = new sphere();
+            ss->setRadius(10.0);
             car aCar;
             aCar.component.push_back(ss);
             sphere s;
+            s.setShowAxiss(1);
             s.cars.push_back(aCar);
             spheres.push_back(s);
             initDrawCars();
@@ -603,6 +622,7 @@ void drawCars(){
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(60.0, (float)winWid / winHei, eyeDistance - planeDepth, eyeDistance + planeDepth);
+    //glOrtho(-1000.f, 1000.0f, -1000.0, 1000.0, -10000.0, 10000.0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(0.0f, 0.0f, eyeDistance, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
@@ -624,6 +644,7 @@ sphere::sphere(){
         va[2] = {3.0, 3.0},
         c[4] = {0.0, 0.5, 0.5, 1.0},
         cc[12] = {1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0};
+    setShowAxiss(0);
     setAngle(a);
     setPos(a);
     setColor(c);
@@ -647,16 +668,21 @@ void sphere::draw(){
     //MyInit();
     //InitCars();
 
+    //printf("%d\n", cars.size());
     glRotatef(angle[0], 1.0, 0.0, 0.0);
     glRotatef(angle[1], 0.0, 1.0, 0.0);
     glutSolidSphere(radius, 100, 100);
-    if(ifShowAxiss){
+    if(showAxiss){
         drawAxiss(10000.0f);
     }
+    //if(!cars.size()){
+    //    printf("has\n");
+    //}
     for(int i = 0; i < cars.size(); ++i){
         //printf("i is %d\n", i);
         cars[i].height = &radius;
         cars[i].draw();
+        //printf("%d\n", cars.size());
     }
     glPopMatrix();
 }
@@ -718,8 +744,11 @@ void car::draw(){
     //printf("++++%f\n", *height);
     for(int i = 0; i < component.size(); ++i){
         //printf("i of car is %d\n", i);
-        component[i].draw();
+        component[i]->draw();
     }
+    //IF(!CARS.SIZE()){
+    //    PRINTF("HAS\N");
+    //}
     glPopMatrix();
 }
 
@@ -759,4 +788,30 @@ cube::cube(){
     //        printf("%f %f %f %f %f\n", pp[0], pp[1], pp[2], pp[3]);
     //    }
     //}
+}
+
+void sphere::setShowAxiss(bool x){
+    if(x){
+        showAxiss = 1;
+    }
+    else{
+        showAxiss = 0;
+    }
+}
+
+void car::setVAngle(float* x){
+    for(int i = 0; i < 2; ++i){
+        vAngle[i] = x[i];
+    }
+}
+void car::setAngle(float* x){
+    for(int i = 0; i < 2; ++i){
+        angle[i] = x[i];
+    }
+}
+
+car::car(){
+    float x[2] = {0.3f, 0.3f};
+    setVAngle(x);
+    setAngle(x);
 }
