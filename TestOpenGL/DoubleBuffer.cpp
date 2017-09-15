@@ -3,6 +3,7 @@
 #include <cmath>
 #include <cstdio>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 const GLfloat planetColor[] = {0.9, 0.6, 0.4};
@@ -93,7 +94,7 @@ struct car:object{
 };
 
 struct sphere:public object{
-    int showAxiss;
+    int showAxiss, maxCars;
     float pos[3], angle[2], vAngle[2], radius,
         color[4], axissColor[3][4];
     vector<car>cars;
@@ -107,7 +108,7 @@ struct sphere:public object{
     void setAxissColor(float* c);
     void setVAngle(float* x);
     void setShowAxiss(bool x);
-    sphere();
+    sphere(int in);
 };
 
 vector<circle>circles;
@@ -186,7 +187,7 @@ void updateTime(int val){
                 car& nc = spheres[i].cars[j];
                 for(int k = 0; k < 2; ++k){
                     nc.angle[k] += nc.vAngle[k] * val;
-                    printf("%f\n", nc.vAngle[k]);
+                    //printf("%f\n", nc.vAngle[k]);
                     //nc.angle[k] -= int(nc.angle[k] / 360) * 360;
                 }
             }
@@ -427,13 +428,8 @@ void setOpenGL(){
             break;
         }
         case 2:{
-            sphere* ss = new sphere();
-            ss->setRadius(10.0);
-            car aCar;
-            aCar.component.push_back(ss);
-            sphere s;
+            sphere s(10);
             s.setShowAxiss(1);
-            s.cars.push_back(aCar);
             spheres.push_back(s);
             initDrawCars();
             break;
@@ -639,11 +635,15 @@ void sphere::setRadius(float x){
     radius = x;
 }
 
-sphere::sphere(){
+sphere::sphere(int in){
     float a[3] = {0.0, 0.0, 0.0},
         va[2] = {3.0, 3.0},
-        c[4] = {0.0, 0.5, 0.5, 1.0},
+        c[4],
         cc[12] = {1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0};
+    for(int i = 0; i < 4; ++i){
+        c[i] = rand() % 10000;
+        c[i] /= 10000;
+    }
     setShowAxiss(0);
     setAngle(a);
     setPos(a);
@@ -651,6 +651,22 @@ sphere::sphere(){
     setRadius(100.0f);
     setAxissColor(cc);
     setVAngle(va);
+
+    maxCars = max(0, in);
+    for(int i = 0; i < maxCars; ++i){
+        car ac;
+        float v[2] = {rand(), rand()};
+        for(int i = 0; i < 2; ++i){
+            v[i] = v[i] / 10000 - int(v[i] / 10000);
+            v[i] = (v[i] - 0.5f) * 2;
+        }
+        ac.setVAngle(v);
+        //for(int i = 0; i < 2; ++i){
+        //    v[i] = rand() % 360;
+        //}
+        //ac.setAngle(v);
+        cars.push_back(ac);
+    }
 }
 
 void sphere::setColor(float *c){
@@ -811,7 +827,13 @@ void car::setAngle(float* x){
 }
 
 car::car(){
-    float x[2] = {0.3f, 0.3f};
-    setVAngle(x);
-    setAngle(x);
+    float an[2] = {0.3, 0.3};
+    setAngle(an);
+    setVAngle(an);
+
+    sphere* ss = new sphere(0);
+    ss->setRadius(10.0);
+    float pos[3] = {0.0, 0.0, ss->radius};
+    ss->setPos(pos);
+    component.push_back(ss);
 }
