@@ -1,15 +1,49 @@
 ﻿  DoubleBuffer.cpp
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(102): warning C4018: “<”: 有符号/无符号不匹配
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(108): warning C4018: “<”: 有符号/无符号不匹配
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(117): warning C4244: “参数”: 从“double”转换到“unsigned int”，可能丢失数据
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(121): warning C4018: “<”: 有符号/无符号不匹配
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(127): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(128): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(150): warning C4018: “<”: 有符号/无符号不匹配
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(165): warning C4018: “<”: 有符号/无符号不匹配
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(172): warning C4018: “<”: 有符号/无符号不匹配
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(317): warning C4244: “参数”: 从“double”转换到“unsigned int”，可能丢失数据
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(322): warning C4018: “<”: 有符号/无符号不匹配
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(409): warning C4244: “参数”: 从“double”转换到“unsigned int”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(9): warning C4838: 从“double”转换到“const GLfloat”需要收缩转换
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(9): warning C4305: “初始化”: 从“double”到“const GLfloat”截断
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(12): warning C4838: 从“double”转换到“const GLfloat”需要收缩转换
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(12): warning C4305: “初始化”: 从“double”到“const GLfloat”截断
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(20): warning C4838: 从“double”转换到“const GLfloat”需要收缩转换
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(20): warning C4305: “初始化”: 从“double”到“const GLfloat”截断
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(21): warning C4838: 从“double”转换到“const GLfloat”需要收缩转换
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(21): warning C4305: “初始化”: 从“double”到“const GLfloat”截断
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(22): warning C4838: 从“double”转换到“const GLfloat”需要收缩转换
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(22): warning C4305: “初始化”: 从“double”到“const GLfloat”截断
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(26): warning C4838: 从“double”转换到“const GLfloat”需要收缩转换
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(26): warning C4305: “初始化”: 从“double”到“const GLfloat”截断
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(27): warning C4838: 从“double”转换到“const GLfloat”需要收缩转换
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(27): warning C4305: “初始化”: 从“double”到“const GLfloat”截断
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(28): warning C4838: 从“double”转换到“const GLfloat”需要收缩转换
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(28): warning C4305: “初始化”: 从“double”到“const GLfloat”截断
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(171): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(177): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(185): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(186): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(198): warning C4244: “参数”: 从“double”转换到“unsigned int”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(202): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(208): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(209): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(234): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(249): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(256): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(286): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(291): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(296): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(301): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(305): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(450): warning C4244: “参数”: 从“double”转换到“unsigned int”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(455): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(547): warning C4244: “参数”: 从“double”转换到“unsigned int”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(593): warning C4838: 从“double”转换到“GLfloat”需要收缩转换
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(593): warning C4305: “初始化”: 从“double”到“GLfloat”截断
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(612): warning C4244: “参数”: 从“double”转换到“unsigned int”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(629): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(644): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(658): warning C4838: 从“int”转换到“float”需要收缩转换
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(658): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(697): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(761): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(830): warning C4838: 从“double”转换到“float”需要收缩转换
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\doublebuffer.cpp(830): warning C4305: “初始化”: 从“double”到“float”截断
   TestOpenGL.vcxproj -> D:\Documents\Learning\AboutCode\OpenGL\TestOpenGL\Debug\TestOpenGL.exe
   TestOpenGL.vcxproj -> D:\Documents\Learning\AboutCode\OpenGL\TestOpenGL\Debug\TestOpenGL.pdb (Partial PDB)
