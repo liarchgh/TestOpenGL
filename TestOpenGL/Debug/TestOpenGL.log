@@ -15,34 +15,29 @@ d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(33): warni
 d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(33): warning C4305: “初始化”: 从“double”到“const GLfloat”截断
 d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(34): warning C4838: 从“double”转换到“const GLfloat”需要收缩转换
 d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(34): warning C4305: “初始化”: 从“double”到“const GLfloat”截断
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(282): warning C4244: “参数”: 从“float”转换到“unsigned int”，可能丢失数据
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(326): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(375): warning C4244: “参数”: 从“double”转换到“unsigned int”，可能丢失数据
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(465): warning C4244: “参数”: 从“double”转换到“unsigned int”，可能丢失数据
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(511): warning C4838: 从“double”转换到“GLfloat”需要收缩转换
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(511): warning C4305: “初始化”: 从“double”到“GLfloat”截断
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(532): warning C4244: “参数”: 从“double”转换到“unsigned int”，可能丢失数据
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(547): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(561): warning C4838: 从“int”转换到“float”需要收缩转换
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(561): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(600): warning C4018: “<”: 有符号/无符号不匹配
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(664): warning C4018: “<”: 有符号/无符号不匹配
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(723): warning C4838: 从“double”转换到“float”需要收缩转换
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(723): warning C4305: “初始化”: 从“double”到“float”截断
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(755): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(763): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(764): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(820): warning C4018: “<”: 有符号/无符号不匹配
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(830): warning C4018: “<”: 有符号/无符号不匹配
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(858): warning C4018: “<”: 有符号/无符号不匹配
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(880): warning C4018: “<”: 有符号/无符号不匹配
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(1004): warning C4018: “<”: 有符号/无符号不匹配
-d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(805): warning C4018: “<”: 有符号/无符号不匹配
-  d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(804): note: 编译类 模板 成员函数“void objectSet<bar>::draw(void)”时
-  d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(293): note: 参见对正在编译的函数 模板 实例化“void objectSet<bar>::draw(void)”的引用
-  d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(164): note: 参见对正在编译的类 模板 实例化“objectSet<bar>”的引用
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(285): warning C4244: “参数”: 从“float”转换到“unsigned int”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(329): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(378): warning C4244: “参数”: 从“double”转换到“unsigned int”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(471): warning C4244: “参数”: 从“double”转换到“unsigned int”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(519): warning C4838: 从“double”转换到“GLfloat”需要收缩转换
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(519): warning C4305: “初始化”: 从“double”到“GLfloat”截断
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(540): warning C4244: “参数”: 从“double”转换到“unsigned int”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(555): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(672): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(771): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(772): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(827): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(837): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(865): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(887): warning C4018: “<”: 有符号/无符号不匹配
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(897): warning C4244: “=”: 从“const float”转换到“int”，可能丢失数据
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(1005): warning C4018: “<”: 有符号/无符号不匹配
 d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(814): warning C4018: “<”: 有符号/无符号不匹配
-  d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(811): note: 编译类 模板 成员函数“void objectSet<bar>::updateTime(int)”时
-  d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(278): note: 参见对正在编译的函数 模板 实例化“void objectSet<bar>::updateTime(int)”的引用
+  d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(813): note: 编译类 模板 成员函数“void objectSet<bar>::draw(void)”时
+  d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(296): note: 参见对正在编译的函数 模板 实例化“void objectSet<bar>::draw(void)”的引用
+  d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(167): note: 参见对正在编译的类 模板 实例化“objectSet<bar>”的引用
+d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(821): warning C4018: “<”: 有符号/无符号不匹配
+  d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(820): note: 编译类 模板 成员函数“void objectSet<bar>::updateTime(int)”时
+  d:\documents\learning\aboutcode\opengl\testopengl\testopengl\task.cpp(281): note: 参见对正在编译的函数 模板 实例化“void objectSet<bar>::updateTime(int)”的引用
   TestOpenGL.vcxproj -> D:\Documents\Learning\AboutCode\OpenGL\TestOpenGL\Debug\TestOpenGL.exe
   TestOpenGL.vcxproj -> D:\Documents\Learning\AboutCode\OpenGL\TestOpenGL\Debug\TestOpenGL.pdb (Partial PDB)

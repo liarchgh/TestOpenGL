@@ -26,13 +26,13 @@ const GLfloat materialEmission[] = {0.0, 0.0, 0.0, 1.0};
 const GLfloat light0Ambient[] = {0.1, 0.1, 0.1, 1.0};
 const GLfloat light0Diffuse[] = {0.7, 0.7, 0.7, 1.0};
 const GLfloat light0Specular[] = {0.9, 0.9, 0.9, 1.0};
-const GLfloat light0Position[] = {1.0, 1.0, 1.0, 0.0};
+const GLfloat light0Position[] = {500.0, 0.0, -400.0, 0.0};
 
 // Light 1.
 const GLfloat light1Ambient[] = {0.1, 0.1, 0.1, 1.0};
 const GLfloat light1Diffuse[] = {0.7, 0.7, 0.7, 1.0};
 const GLfloat light1Specular[] = {0.9, 0.9, 0.9, 1.0};
-const GLfloat light1Position[] = {-1.0, 0.0, -0.5, 0.0};
+const GLfloat light1Position[] = {-500.0, 0.0, -400.0, 0.0};
 
 
 const int DESIRED_FPS = 120, mxv = 10;
@@ -40,8 +40,8 @@ int mxNumCircles = 1000, mxRadius = 40, mnRadius = 3,
 winWid = 800, winHei = 600,
 choose;
 float eyeDistance = 400.0f, planeDepth = 200.0f,
-light0pos[4] = {0.0f, 600.0f, 0.0f , 0.0f},
-light1pos[4] = {300.0f, 200.0f, 400.0f, 0.0f};
+light0pos[4] = {300.0f, 0.0f, -400.0f , 0.0f},
+light1pos[4] = {-300.0f, 0.0f, -400.0f, 0.0f};
 
 struct object{
     float pos[3];
@@ -94,11 +94,13 @@ struct cube:object{
     //voc a, voc b, voc c, voc d, voc e, voc f, voc g, voc h
     cube(voc* vocs);
     cube();
+    cube(float hh);
     void setSquares();
     void setOrigin(float a, float b, float c);
     void setLength(float a);
     void draw();
     void setVocs(voc* vocs);
+    bool judgeCircle(const circle & now);
 };
 
 struct car:object{
@@ -115,7 +117,7 @@ struct sphere:public object{
     int showAxiss, maxCars;
     float pos[3], angle[2], vAngle[2], radius,
         color[4], axissColor[3][4];
-    vector<car>cars;
+    //vector<car>cars;
 
     void drawAxiss(float length);
     void draw();
@@ -126,13 +128,14 @@ struct sphere:public object{
     void setAxissColor(float* c);
     void setVAngle(float* x);
     void setShowAxiss(bool x);
-    sphere(int in);
+    sphere();
 };
 
 
 struct player:object {
     bool canJump;
-    circle man;
+    //circle man;
+    sphere man;
     int score;
 
     void draw();
@@ -143,12 +146,12 @@ struct player:object {
 };
 
 struct bar :object {
-    square s;
+    cube s;
     static float maxHeight;
 
     bar();
     void draw();
-    bool judgeCircle(const circle & now);
+    bool judgeSphere(const sphere & now);
 };
 
 float bar::maxHeight = 200.0f;
@@ -164,7 +167,7 @@ struct objectSet:object {
 struct barSet:objectSet<bar> {
     int count;
 
-    bool judgeCircle(const circle & now);
+    bool judgeSphere(const sphere & now);
     void add();
 };
 
@@ -262,7 +265,7 @@ void myReshape(int w, int h){
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-        float depth1 = 400.0f, depth2 = 600.0f;
+        float depth1 = 400.0f, depth2 = 550.0f;
         glFrustum(-winWid / 2, winWid / 2, -winHei / 2, winHei / 2, depth1, depth2);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -377,6 +380,7 @@ void initDrawSquareCircle(){
 }
 
 void square::draw(){
+    glPushMatrix();
     glBegin(GL_POLYGON);
     for(int i = 0; i < 4; ++i){
         float* col = (*(ver[i])).color,
@@ -385,6 +389,7 @@ void square::draw(){
         glVertex3f(pos[0], pos[1], pos[2]);
     }
     glEnd();
+    glPopMatrix();
 }
 
 void cube::setSquares(){
@@ -392,6 +397,7 @@ void cube::setSquares(){
         squares[0].ver[i] = &vertex[i];
         squares[1].ver[i] = &vertex[7 - i];
     }
+    //squares[5]ÃæÏòÉãÏñ»ú
     for(int i = 0; i < 4; ++i){
         squares[i + 2].ver[0] = &vertex[i];
         squares[i + 2].ver[1] = &vertex[i + 4];
@@ -468,16 +474,18 @@ void initDrawCubes(){
 }
 
 void cube::draw(){
-    glMatrixMode(GL_MODELVIEW);
+    //glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
-    glLoadIdentity();
-    glTranslatef(x, y, z);
-    glRotatef(angle[0], 1.0, 0.0, 0.0);
-    glRotatef(angle[1], 0.0, 1.0, 0.0);
-    glRotatef(angle[2], 0.0, 0.0, 1.0);
+    //glLoadIdentity();
+    //glTranslatef(x, y, z);
+    //glRotatef(angle[0], 1.0, 0.0, 0.0);
+    //glRotatef(angle[1], 0.0, 1.0, 0.0);
+    //glRotatef(angle[2], 0.0, 0.0, 1.0);
     for(int i = 0; i < 6; ++i){
         squares[i].draw();
     }
+    //glColor3fv(vertex[0].color);
+    //glutSolidCube(vertex[0].pos[1]);
     glPopMatrix();
 }
 
@@ -538,7 +546,7 @@ void sphere::setRadius(float x){
     radius = x;
 }
 
-sphere::sphere(int in){
+sphere::sphere(){
     float a[3] = {0.0, 0.0, 0.0},
         va[2] = {3.0, 3.0},
         c[4],
@@ -551,25 +559,25 @@ sphere::sphere(int in){
     setAngle(a);
     setPos(a);
     setColor(c);
-    setRadius(100.0f);
+    setRadius(50.0f);
     setAxissColor(cc);
     setVAngle(va);
 
-    maxCars = max(0, in);
-    for(int i = 0; i < maxCars; ++i){
-        car ac;
-        float v[2] = {rand(), rand()};
-        for(int i = 0; i < 2; ++i){
-            v[i] = v[i] / 10000 - int(v[i] / 10000);
-            v[i] = (v[i] - 0.5f) * 2;
-        }
-        ac.setVAngle(v);
-        //for(int i = 0; i < 2; ++i){
-        //    v[i] = rand() % 360;
-        //}
-        //ac.setAngle(v);
-        cars.push_back(ac);
-    }
+    //maxCars = max(0, in);
+    //for(int i = 0; i < maxCars; ++i){
+    //    car ac;
+    //    float v[2] = {rand(), rand()};
+    //    for(int i = 0; i < 2; ++i){
+    //        v[i] = v[i] / 10000 - int(v[i] / 10000);
+    //        v[i] = (v[i] - 0.5f) * 2;
+    //    }
+    //    ac.setVAngle(v);
+    //    //for(int i = 0; i < 2; ++i){
+    //    //    v[i] = rand() % 360;
+    //    //}
+    //    //ac.setAngle(v);
+    //    cars.push_back(ac);
+    //}
 }
 
 void sphere::setColor(float *c){
@@ -597,12 +605,12 @@ void sphere::draw(){
     //if(!cars.size()){
     //    printf("has\n");
     //}
-    for(int i = 0; i < cars.size(); ++i){
-        //printf("i is %d\n", i);
-        cars[i].height = &radius;
-        cars[i].draw();
-        //printf("%d\n", cars.size());
-    }
+    //for(int i = 0; i < cars.size(); ++i){
+    //    //printf("i is %d\n", i);
+    //    cars[i].height = &radius;
+    //    cars[i].draw();
+    //    //printf("%d\n", cars.size());
+    //}
     glPopMatrix();
 }
 
@@ -719,17 +727,17 @@ void car::setAngle(float* x){
     }
 }
 
-car::car(){
-    float an[2] = {0.3, 0.3};
-    setAngle(an);
-    setVAngle(an);
-
-    sphere* ss = new sphere(0);
-    ss->setRadius(10.0);
-    float pos[3] = {0.0, 0.0, ss->radius};
-    ss->setPos(pos);
-    component.push_back(ss);
-}
+//car::car(){
+//    float an[2] = {0.3, 0.3};
+//    setAngle(an);
+//    setVAngle(an);
+//
+//    sphere* ss = new sphere(0);
+//    ss->setRadius(10.0);
+//    float pos[3] = {0.0, 0.0, ss->radius};
+//    ss->setPos(pos);
+//    component.push_back(ss);
+//}
 
 void player::draw() {
     glPushMatrix();
@@ -774,7 +782,7 @@ void bar::draw() {
     glPopMatrix();
 }
 
-bar::bar():s(maxHeight) {
+bar::bar():s(maxHeight){
     for (int i = 0; i < 3; ++i) {
         pos[i] = 0.0f;
         vel[i] = 0.0f;
@@ -782,6 +790,7 @@ bar::bar():s(maxHeight) {
     }
     vel[0] = -3.0f;
     pos[2] = -500.0f;
+    pos[1] = 0.0f;
     pos[0] = 500.0f;
 }
 
@@ -809,8 +818,6 @@ void objectSet<T>::draw() {
 
 template <typename T>
 void objectSet<T>::updateTime(int val) {
-    //cout << (players.has[0])->man.pos[1] << endl;
-    //cout << (players.has[0])->man.vel[1] << endl;
     for(int i = 0; i < has.size(); ++i){
         has[i]->update(val);
     }
@@ -869,26 +876,27 @@ bool player::judge() {
         canJump = true;
     }
 
-    circle jud = man;
+    sphere jud = man;
     for (int i = 0; i < 3; ++i) {
         jud.pos[i] = pos[i];
     }
-    return bars.judgeCircle(jud);
+    return bars.judgeSphere(jud);
 }
 
-bool barSet::judgeCircle(const circle & now) {
+bool barSet::judgeSphere(const sphere & now) {
     for (int i = 0; i < has.size(); ++i) {
-        if (!(has[i]->judgeCircle(now))) {
+        if (!(has[i]->judgeSphere(now))) {
             return false;
         }
     }
     return true;
 }
 
-bool bar::judgeCircle(const circle & now) {
-    circle x = now;
+bool bar::judgeSphere(const sphere & now) {
+    circle x;
+    x.radius = now.radius;
     for (int i = 0; i < 3; ++i) {
-        x.pos[i] -= pos[i];
+        x.pos[i] = now.pos[i] - pos[i];
     }
     return s.judgeCircle(x);
 }
@@ -904,13 +912,6 @@ bool square::judgeCircle(const circle & now) {
     float smaxy = ver[0]->pos[1];
     float x = now.pos[0];
     float y = now.pos[1];
-
-    //cout << "+++++++++" << endl;
-    //cout << x << ' ' << y << endl;
-    //cout << minx << endl;
-    //cout << maxx << endl;
-    //cout << sminy << endl;
-    //cout << smaxy << endl;
 
     for (int i = 0; i < 4; ++i) {
         if (ver[i]->length2(now) < now.radius * now.radius) {
@@ -954,7 +955,7 @@ square::square(float h) {
     set();
     int r = rand();
     float hh = ((float)(r % 800+ 200) / 1000 * h);
-    cout << hh << endl;
+    //cout << hh << endl;
     ver[0]->pos[1] = hh;
     ver[3]->pos[1] = hh;
 }
@@ -972,7 +973,7 @@ void text::XPrintString(const char *s) {
 
 void text::showText(const char * ss) {
     glPushMatrix();
-    glTranslatef(0.0f, 0.0f, -499.0f);
+    glTranslatef(0.0f, 0.0f, -400.0f);
     glColor3f(1.0, 1.0, 1.0);
     glRasterPos3f(0.5, 0.5, 0.0);
     XPrintString(ss);
@@ -1005,4 +1006,40 @@ void playerSet::draw() {
         has[i]->draw();
     }
     //allText.draw(sta, score);
+}
+
+cube::cube(float hh) {
+    int r = rand();
+    hh = ((float)(r % 800+ 200) / 1000 * hh);
+    setSquares();
+    float a = 30.0f;
+    float z = 30.0f;
+    voc vocs[8];
+    vocs[0].setPos(a, hh, a);
+    vocs[1].setPos(a, hh, -a);
+    vocs[2].setPos(-a, hh, -a);
+    vocs[3].setPos(-a, hh, a);
+    vocs[4].setPos(a, 0, a);
+    vocs[5].setPos(a, 0, -a);
+    vocs[6].setPos(-a, 0, -a);
+    vocs[7].setPos(-a, 0, a);
+
+    vocs[0].setColor(1.0, 0.0, 0.0, 1.0);
+    vocs[1].setColor(0.0, 1.0, 0.0, 1.0);
+    vocs[2].setColor(0.0, 0.0, 1.0, 1.0);
+    vocs[3].setColor(1.0, 1.0, 0.0, 1.0);
+    vocs[4].setColor(1.0, 0.0, 1.0, 1.0);
+    vocs[5].setColor(0.0, 1.0, 1.0, 1.0);
+    vocs[6].setColor(0.0, 0.0, 0.0, 1.0);
+    vocs[7].setColor(1.0, 1.0, 1.0, 1.0);
+
+    setVocs(vocs);
+
+    for (int i = 0; i < 3; ++i) {
+        pos[i] = vel[i] = 0;
+    }
+}
+
+bool cube::judgeCircle(const circle & now) {
+    return squares[5].judgeCircle(now);
 }
