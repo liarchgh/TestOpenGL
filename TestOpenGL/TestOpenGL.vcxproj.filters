@@ -36,5 +36,14 @@
     <ClCompile Include="Test3.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="NewScence.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="task.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

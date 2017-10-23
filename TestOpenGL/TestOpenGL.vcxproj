@@ -22,10 +22,15 @@
     <ClCompile Include="DoubleBuffer.cpp" />
     <ClCompile Include="Fractal.cpp" />
     <ClCompile Include="FractalTetrahedra.cpp" />
+    <ClCompile Include="NewScence.cpp" />
     <ClCompile Include="SnowFractal.cpp" />
     <ClCompile Include="Square.cpp" />
+    <ClCompile Include="task.cpp" />
     <ClCompile Include="Test1.cpp" />
     <ClCompile Include="Test3.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9769B90F-E768-4565-913A-0D345E26DE69}</ProjectGuid>
