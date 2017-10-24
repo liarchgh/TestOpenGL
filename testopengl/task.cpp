@@ -6,6 +6,7 @@
 #include <cstdio>
 #include <vector>
 #include <algorithm>
+#pragma comment( linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"" )
 using namespace std;
 
 GLuint TextFont;
@@ -43,40 +44,60 @@ float eyeDistance = 400.0f, planeDepth = 200.0f,
 light0pos[4] = {300.0f, 0.0f, -400.0f , 0.0f},
 light1pos[4] = {-300.0f, 0.0f, -400.0f, 0.0f};
 
-struct object{
+class object{
     float pos[3];
     float vel[3];
     float acc[3];
+
+    public:
     virtual void draw(){
         printf("draw\n");
     }
+    float getAcc(int in) { return acc[in]; }
+    void setAcc(int in, float x) { acc[in] = x; }
+    float getPos(int in)const{ return pos[in]; }
+    void setPos(int in, float x) { pos[in] = x; }
+    float * getPosv() { return &pos[0]; }
+    float getVel(int in) { return vel[in]; }
+    void setVel(int in, float x) { vel[in] = x; }
     virtual void update(int val);
     float length2(object x);
 };
 
-struct circle:object{
-    int x, y, radius;
+class circle:public object{
+    float radius;
     unsigned char color;
-    struct{
+    class {
+        public:
         int x, y;
     }v;
+
+    public:
     circle();
+    void setRadius(float x) { radius = x; }
+    float getRadius()const{ return radius; }
     circle(float a, float b, float c, float d, float e, unsigned char f);
-    void move(int val);
     void draw();
 };
 
-struct voc:object{
+class voc:public object{
     float color[4] = {1.0, 1.0, 1.0, 1.0};
 
-    void setPos(float a, float b, float c);
-    void setColor(float a, float b, float c, float d);
+public:
+    float getColor(int in) { return color[in]; }
+    float * getColorv() { return &color[0]; }
+    void setColor(int in, float x) { color[in] = x; }
+    void setPoss(float a, float b, float c);
+    void setColors(float a, float b, float c, float d);
     voc(float* vpos, float* vcol);
     voc();
 };
-struct square:object{
+class square:public object{
     voc* ver[4];
 
+public:
+    void setVer(int i, voc* x) { ver[i] = x; }
+    voc * getVer(int i) { return ver[i]; }
     void draw();
     void set();
     square();
@@ -84,13 +105,14 @@ struct square:object{
     bool judgeCircle(const circle & now);
 };
 
-struct cube:object{
+class cube:public object{
     //点的顺序固定 从上往下看，先是第一层的四个点逆时针方向存储，然后是下一层四个点也是逆时针存储
     voc vertex[8];
     square squares[6];
     float x, y, z, length,
         angle[3], vAngle[3];
 
+    public:
     //voc a, voc b, voc c, voc d, voc e, voc f, voc g, voc h
     cube(voc* vocs);
     cube();
@@ -103,41 +125,45 @@ struct cube:object{
     bool judgeCircle(const circle & now);
 };
 
-struct car:object{
+class car:public object{
     float angle[2], vAngle[2], color[4], * height;
     vector<object*>component;
 
+    public:
     void setVAngle(float* x);
     void setAngle(float* x);
-    car();
+    //car();
     void draw();
 };
 
-struct sphere:public object{
+class sphere:public object{
     int showAxiss, maxCars;
     float pos[3], angle[2], vAngle[2], radius,
         color[4], axissColor[3][4];
     //vector<car>cars;
 
+public:
+    void setRadius(float x) { radius = x; }
+    float getRadius()const{ return radius; }
     void drawAxiss(float length);
     void draw();
-    void setRadius(float x);
-    void setColor(float *c);
+    void setColorv(float *c);
     void setAngle(float* a);
-    void setPos(float* p);
     void setAxissColor(float* c);
     void setVAngle(float* x);
     void setShowAxiss(bool x);
+    void setPoss(float*p);
     sphere();
 };
 
 
-struct player:object {
-    bool canJump;
+class player:public object {
+    int countJump;
     //circle man;
     sphere man;
     int score;
 
+    public:
     void draw();
     void jump();
     player();
@@ -145,10 +171,11 @@ struct player:object {
     bool judge();
 };
 
-struct bar :object {
+class bar :public object {
     cube s;
     static float maxHeight;
 
+    public:
     bar();
     void draw();
     bool judgeSphere(const sphere & now);
@@ -157,24 +184,32 @@ struct bar :object {
 float bar::maxHeight = 200.0f;
 
 template <class T>
-struct objectSet:object {
+class objectSet:public object {
+    public:
     vector<T*>has;
 
     virtual void draw();
     virtual void updateTime(int val);
 };
 
-struct barSet:objectSet<bar> {
+class barSet:public objectSet<bar> {
     int count;
 
+    public:
     bool judgeSphere(const sphere & now);
+    int getCount() { return count; }
+    void setCount(int x) { count = x; }
     void add();
 };
 
-struct playerSet:objectSet<player> {
+class playerSet:public objectSet<player> {
     status sta;
     int score;
 
+public:
+    int getScore() { return score; }
+    status getSta() { return sta; }
+    void setSta(status x) { sta = x; }
     bool judge();
     void jump(int no);
     void updateTime(int val);
@@ -182,16 +217,19 @@ struct playerSet:objectSet<player> {
     void draw();
 };
 
-struct text:object{
+class text:public object{
     static char * begin;
-    static char * end;
+    static char * end1;
+    static char * end2;
 
+    public:
     void draw(status sta, int score);
     void XPrintString(const char *s);
     void showText(const char * ss);
 };
-char * text::begin = "Press the 'a' bar and then the game will begin.";
-char * text::end = "Game Over\n\nyour score:";
+char * text::begin = "Press 'A' to run this game.";
+char * text::end1 = "Game Over!Your score:";
+char * text::end2 = ".(Press 'Q' to quit)";
 
 barSet bars;
 playerSet players;
@@ -210,50 +248,13 @@ void initDrawSquareCircle();
 void initDrawCubes();
 void setOpenGL();
 
-void initDrawCars();
-
-//void display() {
-//    glClear(GL_COLOR_BUFFER_BIT);
-//
-//    glColor3f(1.0, 1.0, 1.0);
-//
-//    glRasterPos3f(0.5, 0.5, 0.0);
-//    XPrintString("hello!!!@!@!@");
-//
-//    glFlush();
-//}
-//
-//
-//void init(void) {
-//    glClearColor(0.0, 0.0, 0.0, 0.0);
-//
-//    glMatrixMode(GL_PROJECTION);
-//    glLoadIdentity();
-//    glOrtho(0.0, 1.0, 0.0, 1.0, -1.0, 1.0);
-//
-//    //申请MAX_CHAR个连续的显示列表编号
-//    TextFont = glGenLists(128);
-//
-//    //把每个字符的绘制命令都装到对应的显示列表中
-//    wglUseFontBitmaps(wglGetCurrentDC(), 0, 128, TextFont);
-//}
-
-
+void init();
 
 int main(int argc, char** argv){
-    //glutInit(&argc, argv);
-    //glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-    //glutInitWindowSize(250, 250);
-    //glutInitWindowPosition(100, 100);
-    //glutCreateWindow("Hello");
-    //init();
-    //glutDisplayFunc(display);
-    //glutMainLoop();
-
     glutInit(&argc, argv);
     glutInitWindowPosition(100, 100);
     glutInitWindowSize(800, 600);
-    glutCreateWindow("Test");
+    glutCreateWindow("Jump");
 
     setOpenGL();
     return 0;
@@ -272,11 +273,11 @@ void myReshape(int w, int h){
 }
 
 void updateTime(int val){
-    if (players.sta == status_run) {
-        bars.count += val;
-        if (bars.count > 300) {
+    if (players.getSta() == status_run) {
+        bars.setCount(bars.getCount() + val);
+        if (bars.getCount() > 300) {
             bars.add();
-            bars.count = 0;
+            bars.setCount(0);
         }
         bars.updateTime(val);
         players.updateTime(val);
@@ -291,8 +292,8 @@ void myDisplay(){
     glClear(GL_DEPTH_BUFFER_BIT);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    allText.draw(players.sta, players.score);
-    if (players.sta != status_begin) {
+    allText.draw(players.getSta(), players.getScore());
+    if (players.getSta() != status_begin) {
         bars.draw();
         players.draw();
     }
@@ -311,8 +312,8 @@ void myKey(unsigned char key, int x, int y){
         players.jump(0);
     }
     if (key == 'a' || key == 'A') {
-        if (players.sta == status_begin) {
-            players.sta = status_run;
+        if (players.getSta() == status_begin) {
+            players.setSta(status_run);
         }
     }
 }
@@ -326,34 +327,37 @@ void myInit(){
 }
 
 circle::circle(float a, float b, float c, float d, float e, unsigned char f){
-    pos[0] = a, pos[1] = b, radius = c;
-    vel[0] = d, vel[1] = e;
+    setPos(0, a);
+    setPos(1, b);
+    radius = c;
+    setVel(0, d); 
+    setVel(1, e);
     color = f;
 }
 
 circle::circle() {
     circle(0, 0, 50.0f, 20, 20, 0x0f);
 }
-void circle::move(int val){
-    x += v.x * val;
-    y += v.y * val;
-    if(x >= winWid){
-        x = winWid;
-        v.x = -v.x;
-    }
-    else if(x <= 0){
-        x = 0;
-        v.x = -v.x;
-    }
-    if(y >= winHei){
-        y = winHei;
-        v.y = -v.y;
-    }
-    else if(y <= 0){
-        y = 0;
-        v.y = -v.y;
-    }
-}
+//void circle::move(int val){
+//    x += v.x * val;
+//    y += v.y * val;
+//    if(x >= winWid){
+//        x = winWid;
+//        v.x = -v.x;
+//    }
+//    else if(x <= 0){
+//        x = 0;
+//        v.x = -v.x;
+//    }
+//    if(y >= winHei){
+//        y = winHei;
+//        v.y = -v.y;
+//    }
+//    else if(y <= 0){
+//        y = 0;
+//        v.y = -v.y;
+//    }
+//}
 
 void setOpenGL(){
     srand(unsigned(time(0)));
@@ -365,7 +369,7 @@ void setOpenGL(){
     //把每个字符的绘制命令都装到对应的显示列表中
     wglUseFontBitmaps(wglGetCurrentDC(), 0, 128, TextFont);
 
-    initDrawCars();
+    init();
 }
 
 void initDrawSquareCircle(){
@@ -383,8 +387,8 @@ void square::draw(){
     glPushMatrix();
     glBegin(GL_POLYGON);
     for(int i = 0; i < 4; ++i){
-        float* col = (*(ver[i])).color,
-            *pos = (*(ver[i])).pos;
+        float * col = ver[i]->getColorv(),
+            *pos = ver[i]->getPosv();
         glColor4f(col[0], col[1], col[2], col[3]);
         glVertex3f(pos[0], pos[1], pos[2]);
     }
@@ -394,15 +398,15 @@ void square::draw(){
 
 void cube::setSquares(){
     for(int i = 0; i < 4; ++i){
-        squares[0].ver[i] = &vertex[i];
-        squares[1].ver[i] = &vertex[7 - i];
+        squares[0].setVer(i, &vertex[i]);
+        squares[1].setVer(i, &vertex[7 - i]);
     }
     //squares[5]面向摄像机
     for(int i = 0; i < 4; ++i){
-        squares[i + 2].ver[0] = &vertex[i];
-        squares[i + 2].ver[1] = &vertex[i + 4];
-        squares[i + 2].ver[2] = &vertex[(i + 1) % 4 + 4];
-        squares[i + 2].ver[3] = &vertex[(i + 1) % 4];
+        squares[i + 2].setVer(0, &vertex[i]);
+        squares[i + 2].setVer(1, &vertex[i + 4]);
+        squares[i + 2].setVer(2, &vertex[(i + 1) % 4 + 4]);
+        squares[i + 2].setVer(3, &vertex[(i + 1) % 4]);
     }
     for(int i = 0; i < 3; ++i){
         angle[i] = vAngle[i] = 0.0f;
@@ -422,24 +426,18 @@ void cube::setVocs(voc* vocs){
 
 voc::voc(float* vpos, float* vcol){
     for(int i = 0; i < 3; ++i){
-        pos[i] = vpos[i];
+        setPos(i, vpos[i]);
     }
     for(int i = 0; i < 4; ++i){
         color[i] = vcol[i];
     }
 }
 
-void voc::setPos(float a, float b, float c){
-    pos[0] = a;
-    pos[1] = b;
-    pos[2] = c;
-}
-
-void voc::setColor(float a, float b, float c, float d){
-    color[0] = a;
-    color[1] = b;
-    color[2] = c;
-    color[3] = d;
+void voc::setColors(float a, float b, float c, float d){
+    setColor(0, a);
+    setColor(1, b);
+    setColor(2, c);
+    setColor(3, d);
 }
 
 voc::voc(){
@@ -447,7 +445,7 @@ voc::voc(){
         color[i] = 1.0f;
     }
     for(int i = 0; i < 3; ++i){
-        pos[i] = 1.0f;
+        setPos(i, 1.0f);
     }
 }
 
@@ -489,7 +487,7 @@ void cube::draw(){
     glPopMatrix();
 }
 
-void initDrawCars(){
+void init(){
     glutInitDisplayMode(GL_DOUBLE | GL_RGB | GL_DEPTH);
     glClearColor(0.0, 0.0, 0.0, 1.0); // Set black background color.
     glEnable(GL_DEPTH_TEST); // Use depth-buffer for hidden surface removal.
@@ -542,10 +540,6 @@ void initDrawCars(){
     glutMainLoop();
 }
 
-void sphere::setRadius(float x){
-    radius = x;
-}
-
 sphere::sphere(){
     float a[3] = {0.0, 0.0, 0.0},
         va[2] = {3.0, 3.0},
@@ -557,8 +551,8 @@ sphere::sphere(){
     }
     setShowAxiss(0);
     setAngle(a);
-    setPos(a);
-    setColor(c);
+    setPoss(a);
+    setColorv(c);
     setRadius(50.0f);
     setAxissColor(cc);
     setVAngle(va);
@@ -580,7 +574,7 @@ sphere::sphere(){
     //}
 }
 
-void sphere::setColor(float *c){
+void sphere::setColorv(float *c){
     for(int i = 0; i < 4; ++i){
         color[i] = c[i];
     }
@@ -589,19 +583,19 @@ void sphere::setColor(float *c){
 void sphere::draw(){
     //glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
-    glTranslatef(pos[0], pos[1], pos[2]);
+    glTranslatef(getPos(0), getPos(1), getPos(2));
     //printf("rot %f\n", angle[0]);
     glColor3fv(color);
     //MyInit();
     //InitCars();
 
     //printf("%d\n", cars.size());
-    glRotatef(angle[0], 1.0, 0.0, 0.0);
-    glRotatef(angle[1], 0.0, 1.0, 0.0);
+    //glRotatef(angle[0], 1.0, 0.0, 0.0);
+    //glRotatef(angle[1], 0.0, 1.0, 0.0);
     glutSolidSphere(radius, 100, 100);
-    if(showAxiss){
-        drawAxiss(10000.0f);
-    }
+    //if(showAxiss){
+    //    drawAxiss(10000.0f);
+    //}
     //if(!cars.size()){
     //    printf("has\n");
     //}
@@ -619,9 +613,9 @@ void sphere::setAngle(float* a){
         angle[i] = a[i];
     }
 }
-void sphere::setPos(float* p){
+void sphere::setPoss(float* p){
     for(int i = 0; i < 3; ++i){
-        pos[i] = p[i];
+        setPos(i, p[i]);
     }
 }
 
@@ -683,23 +677,23 @@ cube::cube(){
     setSquares();
     float a = 100.0f, ox = 0.0, oy = 0.0, oz = 0.0;
     voc vocs[8];
-    vocs[0].setPos(a, a, a);
-    vocs[1].setPos(a, a, -a);
-    vocs[2].setPos(-a, a, -a);
-    vocs[3].setPos(-a, a, a);
-    vocs[4].setPos(a, -a, a);
-    vocs[5].setPos(a, -a, -a);
-    vocs[6].setPos(-a, -a, -a);
-    vocs[7].setPos(-a, -a, a);
+    vocs[0].setPoss(a, a, a);
+    vocs[1].setPoss(a, a, -a);
+    vocs[2].setPoss(-a, a, -a);
+    vocs[3].setPoss(-a, a, a);
+    vocs[4].setPoss(a, -a, a);
+    vocs[5].setPoss(a, -a, -a);
+    vocs[6].setPoss(-a, -a, -a);
+    vocs[7].setPoss(-a, -a, a);
 
-    vocs[0].setColor(1.0, 0.0, 0.0, 1.0);
-    vocs[1].setColor(0.0, 1.0, 0.0, 1.0);
-    vocs[2].setColor(0.0, 0.0, 1.0, 1.0);
-    vocs[3].setColor(1.0, 1.0, 0.0, 1.0);
-    vocs[4].setColor(1.0, 0.0, 1.0, 1.0);
-    vocs[5].setColor(0.0, 1.0, 1.0, 1.0);
-    vocs[6].setColor(0.0, 0.0, 0.0, 1.0);
-    vocs[7].setColor(1.0, 1.0, 1.0, 1.0);
+    vocs[0].setColors(1.0, 0.0, 0.0, 1.0);
+    vocs[1].setColors(0.0, 1.0, 0.0, 1.0);
+    vocs[2].setColors(0.0, 0.0, 1.0, 1.0);
+    vocs[3].setColors(1.0, 1.0, 0.0, 1.0);
+    vocs[4].setColors(1.0, 0.0, 1.0, 1.0);
+    vocs[5].setColors(0.0, 1.0, 1.0, 1.0);
+    vocs[6].setColors(0.0, 0.0, 0.0, 1.0);
+    vocs[7].setColors(1.0, 1.0, 1.0, 1.0);
 
 
     setVocs(vocs);
@@ -741,72 +735,76 @@ void car::setAngle(float* x){
 
 void player::draw() {
     glPushMatrix();
-    glTranslatef(pos[0], pos[1], pos[2]);
+    glTranslatef(getPos(0), getPos(1), getPos(2));
     man.draw();
     glPopMatrix();
 }
 
 player::player():man() {
     for (int i = 0; i < 3; ++i) {
-        pos[i] = 0.0f;
-        vel[i] = 0.0f;
-        acc[i] = 0.0f;
+        setPos(i, 0.0f);
+        setVel(i, 0.0f);
+        setAcc(i, 0.0f);
         
-        man.pos[i] = 0.0f;
-        man.vel[i] = 0.0f;
-        man.acc[i] = 0.0f;
+        man.setPos(i, 0.0f);
+        man.setVel(i, 0.0f);
+        man.setAcc(i, 0.0f);
     }
     score = 0;
-    pos[2] = -500.0f;
-    pos[0] = -300.0f;
-    canJump = false;
-    man.radius = 20.0;
-    acc[1] = -0.2f;
+    setPos(2, -500.0f);
+    setPos(0, -300.0f);
+    countJump = 0;
+    man.setRadius(20.0f);
+    setAcc(1, -0.2f);
 }
 
 void circle::draw(){
     glColor3f(0.0f, 0.5f, 1.0f);
     glBegin(GL_TRIANGLE_FAN);
     for(double j = 0.0, stepRa = 0.1; j < 3.1 * 2; j += stepRa){
-        float tx = pos[0] + radius * cos(j),
-            ty = pos[1] + radius * sin(j);
-        glVertex3f(tx, ty, pos[2]);
+        float tx = getPos(0) + radius * cos(j),
+            ty = getPos(1) + radius * sin(j);
+        glVertex3f(tx, ty, getPos(2));
     }
     glEnd();
 }
 
 void bar::draw() {
     glPushMatrix();
-    glTranslatef(pos[0], pos[1], pos[2]);
+    glTranslatef(getPos(0), getPos(1), getPos(2));
     s.draw();
     glPopMatrix();
 }
 
 bar::bar():s(maxHeight){
     for (int i = 0; i < 3; ++i) {
-        pos[i] = 0.0f;
-        vel[i] = 0.0f;
-        acc[i] = 0.0f;
+        setPos(i, 0.0f);
+        setVel(i, 0.0f);
+        setAcc(i, 0.0f);
     }
-    vel[0] = -3.0f;
-    pos[2] = -500.0f;
-    pos[1] = 0.0f;
-    pos[0] = 500.0f;
+    setVel(0, -3.0f);
+    setPos(2, -500.0f);
+    setPos(1, 0.0f);
+    setPos(0, 500.0f);
 }
 
 void square::set() {
     for (int i = 0; i < 4; ++i) {
         ver[i] = new voc();
-        ver[i]->pos[2] = 0.0f;
+        ver[i]->setPos(2, 0.0f);
         for (int j = 0; j < 4; ++j) {
-            ver[i]->color[j] = 1.0f;
+            ver[i]->setColor(j, 1.0f);
         }
     }
 
-    ver[0]->pos[1] = ver[3]->pos[1] = 100.0f;
-    ver[0]->pos[0] = ver[1]->pos[0] = -30.0f;
-    ver[1]->pos[1] = ver[2]->pos[1] = 0.0f;
-    ver[2]->pos[0] = ver[3]->pos[0] = 30.0f;
+    ver[0]->setPos(1, 100.0f);
+    ver[3]->setPos(1, 100.0f);
+    ver[0]->setPos(0, -30.0f);
+    ver[1]->setPos(0, -30.0f);
+    ver[1]->setPos(1, 0.0f);
+    ver[2]->setPos(1, 0.0f);
+    ver[2]->setPos(0, 30.0f);
+    ver[3]->setPos(0, 30.0f);
 }
 
 template <typename T>
@@ -840,9 +838,9 @@ void playerSet::jump(int no) {
 }
 
 void player::jump() {
-    if (canJump) {
-        vel[1] = 10.0f;
-        canJump = false;
+    if (countJump < 2) {
+        setVel(1, 8.0f);
+        ++countJump;
     }
 }
 
@@ -855,8 +853,8 @@ void object::update(int val) {
 
 void player::update(int val) {
     for (int j = 0; j < 3; ++j) {
-        vel[j] += acc[j] * val;
-        pos[j] += vel[j] * val;
+        setVel(j, getVel(j) + getAcc(j) * val);
+        setPos(j, getPos(j) + getVel(j) * val);
     }
     man.update(val);
 }
@@ -870,15 +868,15 @@ void playerSet::updateTime(int val) {
 }
 
 bool player::judge() {
-    if (pos[1] < 0.0f) {
-        pos[1] = 0.0f;
-        vel[1] = 0.0f;
-        canJump = true;
+    if (getPos(1) < 0.0f) {
+        setPos(1, 0.0f);
+        setVel(1, 0.0f);
+        countJump = 0;
     }
 
     sphere jud = man;
     for (int i = 0; i < 3; ++i) {
-        jud.pos[i] = pos[i];
+        jud.setPos(i, getPos(i));
     }
     return bars.judgeSphere(jud);
 }
@@ -894,27 +892,27 @@ bool barSet::judgeSphere(const sphere & now) {
 
 bool bar::judgeSphere(const sphere & now) {
     circle x;
-    x.radius = now.radius;
+    x.setRadius(now.getRadius());
     for (int i = 0; i < 3; ++i) {
-        x.pos[i] = now.pos[i] - pos[i];
+        x.setPos(i, now.getPos(i) - getPos(i));
     }
     return s.judgeCircle(x);
 }
 
 bool square::judgeCircle(const circle & now) {
-    float maxx = ver[3]->pos[0] + now.radius;
-    float minx = ver[0]->pos[0] - now.radius;
-    float miny = ver[1]->pos[1] - now.radius;
-    float maxy = ver[0]->pos[1] + now.radius;
-    float smaxx = ver[3]->pos[0];
-    float sminx = ver[0]->pos[0];
-    float sminy = ver[1]->pos[1];
-    float smaxy = ver[0]->pos[1];
-    float x = now.pos[0];
-    float y = now.pos[1];
+    float maxx = ver[3]->getPos(0) + now.getRadius();
+    float minx = ver[0]->getPos(0) - now.getRadius();
+    float miny = ver[1]->getPos(1) - now.getRadius();
+    float maxy = ver[0]->getPos(1) + now.getRadius();
+    float smaxx = ver[3]->getPos(0);
+    float sminx = ver[0]->getPos(0);
+    float sminy = ver[1]->getPos(1);
+    float smaxy = ver[0]->getPos(1);
+    float x = now.getPos(0);
+    float y = now.getPos(1);
 
     for (int i = 0; i < 4; ++i) {
-        if (ver[i]->length2(now) < now.radius * now.radius) {
+        if (ver[i]->length2(now) < now.getRadius ()* now.getRadius()) {
             return false;
         }
     }
@@ -956,8 +954,8 @@ square::square(float h) {
     int r = rand();
     float hh = ((float)(r % 800+ 200) / 1000 * h);
     //cout << hh << endl;
-    ver[0]->pos[1] = hh;
-    ver[3]->pos[1] = hh;
+    ver[0]->setPos(1, hh);
+    ver[3]->setPos(1, hh);
 }
 
 void text::XPrintString(const char *s) {
@@ -991,11 +989,13 @@ void text::draw(status sta, int score) {
         for (int i = score; i > 0; ++len) {
             i /= 10;
         }
-        int endLen = strlen(end);
-        char * sb = new char[len + 6 + endLen];
+        int endLen1 = strlen(end1);
+        int endLen2 = strlen(end2);
+        char * sb = new char[len + 6 + endLen1 + endLen2];
         //char sb[20000];
-        strcpy_s(sb, len + 6 + endLen, end);
-        sprintf_s(sb + endLen, len + 6, "%d", score);
+        strcpy_s(sb, len + 6 + endLen1 + endLen2, end1);
+        sprintf_s(sb + endLen1, len + 6, "%d", score);
+        strcpy_s(sb + endLen1 + len, 6 + endLen2, end2);
         //sb[len + endLen] = '\0';
         showText(sb);
     }
@@ -1015,31 +1015,38 @@ cube::cube(float hh) {
     float a = 30.0f;
     float z = 30.0f;
     voc vocs[8];
-    vocs[0].setPos(a, hh, a);
-    vocs[1].setPos(a, hh, -a);
-    vocs[2].setPos(-a, hh, -a);
-    vocs[3].setPos(-a, hh, a);
-    vocs[4].setPos(a, 0, a);
-    vocs[5].setPos(a, 0, -a);
-    vocs[6].setPos(-a, 0, -a);
-    vocs[7].setPos(-a, 0, a);
+    vocs[0].setPoss(a, hh, a);
+    vocs[1].setPoss(a, hh, -a);
+    vocs[2].setPoss(-a, hh, -a);
+    vocs[3].setPoss(-a, hh, a);
+    vocs[4].setPoss(a, 0, a);
+    vocs[5].setPoss(a, 0, -a);
+    vocs[6].setPoss(-a, 0, -a);
+    vocs[7].setPoss(-a, 0, a);
 
-    vocs[0].setColor(1.0, 0.0, 0.0, 1.0);
-    vocs[1].setColor(0.0, 1.0, 0.0, 1.0);
-    vocs[2].setColor(0.0, 0.0, 1.0, 1.0);
-    vocs[3].setColor(1.0, 1.0, 0.0, 1.0);
-    vocs[4].setColor(1.0, 0.0, 1.0, 1.0);
-    vocs[5].setColor(0.0, 1.0, 1.0, 1.0);
-    vocs[6].setColor(0.0, 0.0, 0.0, 1.0);
-    vocs[7].setColor(1.0, 1.0, 1.0, 1.0);
+    vocs[0].setColors(1.0, 0.0, 0.0, 1.0);
+    vocs[1].setColors(0.0, 1.0, 0.0, 1.0);
+    vocs[2].setColors(0.0, 0.0, 1.0, 1.0);
+    vocs[3].setColors(1.0, 1.0, 0.0, 1.0);
+    vocs[4].setColors(1.0, 0.0, 1.0, 1.0);
+    vocs[5].setColors(0.0, 1.0, 1.0, 1.0);
+    vocs[6].setColors(0.0, 0.0, 0.0, 1.0);
+    vocs[7].setColors(1.0, 1.0, 1.0, 1.0);
 
     setVocs(vocs);
 
     for (int i = 0; i < 3; ++i) {
-        pos[i] = vel[i] = 0;
+        setPos(i, 0.0f);
+        setVel(i, 0.0f);
     }
 }
 
 bool cube::judgeCircle(const circle & now) {
     return squares[5].judgeCircle(now);
+}
+
+void voc::setPoss(float a, float b, float c) {
+    setPos(0, a);
+    setPos(1, b);
+    setPos(2, c);
 }
