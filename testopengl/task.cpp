@@ -36,218 +36,279 @@ const GLfloat light1Specular[] = {0.9, 0.9, 0.9, 1.0};
 const GLfloat light1Position[] = {-500.0, 0.0, -400.0, 0.0};
 
 
-const int DESIRED_FPS = 120, mxv = 10;
-int mxNumCircles = 1000, mxRadius = 40, mnRadius = 3,
-winWid = 800, winHei = 600,
-choose;
-float eyeDistance = 400.0f, planeDepth = 200.0f,
-light0pos[4] = {300.0f, 0.0f, -400.0f , 0.0f},
-light1pos[4] = {-300.0f, 0.0f, -400.0f, 0.0f};
+const int
+	//FPS值
+	DESIRED_FPS = 120;
+int
+	winWid = 800,
+	winHei = 600;
+float
+	light0pos[4] = {300.0f, 0.0f, -400.0f , 0.0f},
+	light1pos[4] = {-300.0f, 0.0f, -400.0f, 0.0f};
 
 class object{
+private:
+	//三维位置坐标
     float pos[3];
+	//三维速度向量
     float vel[3];
+	//三维加速度向量
     float acc[3];
 
-    public:
+public:
+	//绘制当前物体
     virtual void draw(){
         printf("draw\n");
     }
+    virtual void update(int val);
+    float length2(object x);
+	//set get
     float getAcc(int in) { return acc[in]; }
     void setAcc(int in, float x) { acc[in] = x; }
     float getPos(int in)const{ return pos[in]; }
     void setPos(int in, float x) { pos[in] = x; }
+	//获取三维坐标数组
     float * getPosv() { return &pos[0]; }
     float getVel(int in) { return vel[in]; }
     void setVel(int in, float x) { vel[in] = x; }
-    virtual void update(int val);
-    float length2(object x);
 };
 
 class circle:public object{
+private:
+	//球的半径
     float radius;
+	//球表面颜色
     unsigned char color;
-    class {
-        public:
-        int x, y;
-    }v;
 
-    public:
+public:
+	//绘制当前物体 重写虚函数
+    void draw();
+	//construct
     circle();
+    circle(float a, float b, float c, float d, float e, unsigned char f);
+	//set get
     void setRadius(float x) { radius = x; }
     float getRadius()const{ return radius; }
-    circle(float a, float b, float c, float d, float e, unsigned char f);
-    void draw();
 };
 
 class voc:public object{
+private:
+	//rgba颜色
     float color[4] = {1.0, 1.0, 1.0, 1.0};
-
 public:
+	//set get
     float getColor(int in) { return color[in]; }
+	//获取rgba颜色数组
     float * getColorv() { return &color[0]; }
     void setColor(int in, float x) { color[in] = x; }
     void setPoss(float a, float b, float c);
     void setColors(float a, float b, float c, float d);
+	//construct
     voc(float* vpos, float* vcol);
     voc();
 };
-class square:public object{
-    voc* ver[4];
 
+class square:public object{
+private:
+    voc* ver[4];
 public:
     void setVer(int i, voc* x) { ver[i] = x; }
+	//获取定点数组
     voc * getVer(int i) { return ver[i]; }
+	//绘制
     void draw();
+	//初始化四个顶点指针
     void set();
+	//construct
     square();
     square(float h);
+	//判断和圆是否接触
     bool judgeCircle(const circle & now);
 };
 
 class cube:public object{
+private:
     //点的顺序固定 从上往下看，先是第一层的四个点逆时针方向存储，然后是下一层四个点也是逆时针存储
     voc vertex[8];
     square squares[6];
-    float x, y, z, length,
-        angle[3], vAngle[3];
-
-    public:
-    //voc a, voc b, voc c, voc d, voc e, voc f, voc g, voc h
+    float
+		//绕三轴旋转角度
+        angle[3],
+		//绕三轴旋转速度
+		vAngle[3];
+public:
+	//contruct
     cube(voc* vocs);
     cube();
     cube(float hh);
+	//set get
     void setSquares();
-    void setOrigin(float a, float b, float c);
-    void setLength(float a);
-    void draw();
     void setVocs(voc* vocs);
+	//绘制
+    void draw();
+	//判断是否与园相接触
     bool judgeCircle(const circle & now);
 };
 
-class car:public object{
-    float angle[2], vAngle[2], color[4], * height;
-    vector<object*>component;
-
-    public:
-    void setVAngle(float* x);
-    void setAngle(float* x);
-    //car();
-    void draw();
-};
-
 class sphere:public object{
-    int showAxiss, maxCars;
-    float pos[3], angle[2], vAngle[2], radius,
-        color[4], axissColor[3][4];
-    //vector<car>cars;
-
+private:
+	//是否显示局部坐标轴
+	int showAxiss;
+	//旋转角度
+	float angle[2],
+		//旋转速度
+		vAngle[2],
+		//半径
+		radius,
+		//坐标轴颜色
+		axissColor[3][4],
+		color[4];
 public:
+	//set get
     void setRadius(float x) { radius = x; }
     float getRadius()const{ return radius; }
-    void drawAxiss(float length);
-    void draw();
-    void setColorv(float *c);
+	void setColor(int in, float x);
+	float getColor(int in);
+	void setColorv(float * c);
+	float * getColorv();
     void setAngle(float* a);
     void setAxissColor(float* c);
     void setVAngle(float* x);
     void setShowAxiss(bool x);
     void setPoss(float*p);
+	//绘制坐标轴
+    void drawAxiss(float length);
+	//绘制
+    void draw();
     sphere();
 };
 
 
 class player:public object {
+private:
+	//当前跳跃等级 最大为2
     int countJump;
-    //circle man;
+	//当前角色为球型
     sphere man;
+	//分数
     int score;
-
-    public:
+public:
+	//绘制
     void draw();
+	//人物跳跃
     void jump();
+	//construct
     player();
+	//每帧更新
     void update(int val);
+	//判定是否与障碍物碰撞
     bool judge();
 };
 
 class bar :public object {
+private:
+	//障碍形状
     cube s;
+	//最大高度
     static float maxHeight;
-
-    public:
+public:
+	//construct
     bar();
+	//绘制
     void draw();
+	//判断是否和指定球体接触
     bool judgeSphere(const sphere & now);
 };
-
 float bar::maxHeight = 200.0f;
 
 template <class T>
 class objectSet:public object {
-    public:
+public:
+	//集合中的物体
     vector<T*>has;
-
+	//绘制集合中的物体
     virtual void draw();
+	//每帧更新
     virtual void updateTime(int val);
 };
 
 class barSet:public objectSet<bar> {
+private:
+	//记录距离上次添加障碍的时间间隔
     int count;
-
-    public:
+public:
     bool judgeSphere(const sphere & now);
+    void add();
+	//set get
     int getCount() { return count; }
     void setCount(int x) { count = x; }
-    void add();
 };
 
 class playerSet:public objectSet<player> {
+private:
+	//玩家状态
     status sta;
+	//分数
     int score;
-
 public:
+	//set get
     int getScore() { return score; }
     status getSta() { return sta; }
     void setSta(status x) { sta = x; }
+	//判定是否有玩家游戏结束
     bool judge();
+	//玩家跳跃
     void jump(int no);
+	//每帧更新
     void updateTime(int val);
+	//construct
     playerSet();
+	//绘制
     void draw();
 };
 
+//显示文字
 class text:public object{
+private:
+	//不同状态显示的文本
     static char * begin;
     static char * end1;
     static char * end2;
-
-    public:
+public:
+	//判断显示什么文字
     void draw(status sta, int score);
+	//处理文字
     void XPrintString(const char *s);
+	//显示文字
     void showText(const char * ss);
 };
 char * text::begin = "Press 'A' to run this game.";
 char * text::end1 = "Game Over!Your score:";
 char * text::end2 = ".(Press 'Q' to quit)";
 
+//所有障碍
 barSet bars;
+//所有玩家 之后可以扩充为单机多玩家或者一个人控制多个角色
 playerSet players;
+//文本显示
 text allText;
 
 //vector<object*>all;
 
 void myInit();
+//按键处理
 void myKey(unsigned char key, int x, int y);
+//鼠标处理
 void myMouse(int btn, int state, int x, int y);
+//绘制屏幕
 void myDisplay();
+//窗口大小、比例改变
 void myReshape(int w, int h);
+//更新场景
 void updateTime(int val);
 
-void initDrawSquareCircle();
-void initDrawCubes();
+//设置openGL上下文
 void setOpenGL();
-
 void init();
 
 int main(int argc, char** argv){
@@ -338,26 +399,6 @@ circle::circle(float a, float b, float c, float d, float e, unsigned char f){
 circle::circle() {
     circle(0, 0, 50.0f, 20, 20, 0x0f);
 }
-//void circle::move(int val){
-//    x += v.x * val;
-//    y += v.y * val;
-//    if(x >= winWid){
-//        x = winWid;
-//        v.x = -v.x;
-//    }
-//    else if(x <= 0){
-//        x = 0;
-//        v.x = -v.x;
-//    }
-//    if(y >= winHei){
-//        y = winHei;
-//        v.y = -v.y;
-//    }
-//    else if(y <= 0){
-//        y = 0;
-//        v.y = -v.y;
-//    }
-//}
 
 void setOpenGL(){
     srand(unsigned(time(0)));
@@ -447,16 +488,6 @@ voc::voc(){
     for(int i = 0; i < 3; ++i){
         setPos(i, 1.0f);
     }
-}
-
-void cube::setOrigin(float a, float b, float c){
-    x = a;
-    y = b;
-    z = c;
-}
-
-void cube::setLength(float a){
-    length = a;
 }
 
 void initDrawCubes(){
@@ -576,7 +607,7 @@ sphere::sphere(){
 
 void sphere::setColorv(float *c){
     for(int i = 0; i < 4; ++i){
-        color[i] = c[i];
+        setColor(i, c[i]);
     }
 }
 
@@ -585,7 +616,7 @@ void sphere::draw(){
     glPushMatrix();
     glTranslatef(getPos(0), getPos(1), getPos(2));
     //printf("rot %f\n", angle[0]);
-    glColor3fv(color);
+    glColor3fv(getColorv());
     //MyInit();
     //InitCars();
 
@@ -655,24 +686,6 @@ void sphere::setVAngle(float* x){
     }
 }
 
-void car::draw(){
-    //printf("draw a car\n");
-    //glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glRotatef(angle[0], 0.0, 1.0, 0.0);
-    glRotatef(angle[1], 1.0, 0.0, 0.0);
-    glTranslatef(0.0, 0.0, *height);
-    //printf("++++%f\n", *height);
-    for(int i = 0; i < component.size(); ++i){
-        //printf("i of car is %d\n", i);
-        component[i]->draw();
-    }
-    //IF(!CARS.SIZE()){
-    //    PRINTF("HAS\N");
-    //}
-    glPopMatrix();
-}
-
 cube::cube(){
     setSquares();
     float a = 100.0f, ox = 0.0, oy = 0.0, oz = 0.0;
@@ -697,8 +710,6 @@ cube::cube(){
 
 
     setVocs(vocs);
-    setLength(a);
-    setOrigin(ox, oy, oz);
 }
 
 void sphere::setShowAxiss(bool x){
@@ -709,29 +720,6 @@ void sphere::setShowAxiss(bool x){
         showAxiss = 0;
     }
 }
-
-void car::setVAngle(float* x){
-    for(int i = 0; i < 2; ++i){
-        vAngle[i] = x[i];
-    }
-}
-void car::setAngle(float* x){
-    for(int i = 0; i < 2; ++i){
-        angle[i] = x[i];
-    }
-}
-
-//car::car(){
-//    float an[2] = {0.3, 0.3};
-//    setAngle(an);
-//    setVAngle(an);
-//
-//    sphere* ss = new sphere(0);
-//    ss->setRadius(10.0);
-//    float pos[3] = {0.0, 0.0, ss->radius};
-//    ss->setPos(pos);
-//    component.push_back(ss);
-//}
 
 void player::draw() {
     glPushMatrix();
@@ -1049,4 +1037,15 @@ void voc::setPoss(float a, float b, float c) {
     setPos(0, a);
     setPos(1, b);
     setPos(2, c);
+}
+
+float * sphere::getColorv(){
+	return color;
+}
+
+void sphere::setColor(int in, float x){
+	color[in] = x;
+}
+float sphere::getColor(int in){
+	return color[in];
 }
